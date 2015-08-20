@@ -1,0 +1,1 @@
+${msg}<script type="text/javascript" charset="utf-8">try{parent.$.messager.progress('close');parent.com.sirius.skymall.user.progressBar('close');}catch(e){}</script>
