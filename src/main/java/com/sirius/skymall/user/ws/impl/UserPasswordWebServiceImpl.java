@@ -28,6 +28,7 @@ public class UserPasswordWebServiceImpl extends BaseServiceImpl<User> implements
 	UserService userService;
 	/**
 	 * 找回密码
+	 * 找密码
 	 */
 	public PasswordResult getPass(UserEntity pe) {
 		PasswordResult pr=new PasswordResult();
