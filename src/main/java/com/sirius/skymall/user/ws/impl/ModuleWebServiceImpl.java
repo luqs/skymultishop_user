@@ -59,7 +59,7 @@ public class ModuleWebServiceImpl extends BaseServiceImpl<ModuleSetting>  implem
 			ValidationError er=ValidationError.SYSTEM_ERROR;
 			int errorCode=er.getErrorCode();
 			mr.setErrorCode(errorCode);
-			mr.setErrorMessage("系统错误");
+			mr.setErrorMessage("System Error");
 			logger.error(e.getMessage());
 		}
 		return mr;
