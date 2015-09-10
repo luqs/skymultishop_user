@@ -32,6 +32,7 @@ import com.sirius.skymall.user.ws.entity.SurveyQuestionItemEntity;
 import com.sirius.skymall.user.ws.error.ValidationError;
 import com.sirius.skymall.user.ws.result.SurveyCommitResult;
 import com.sirius.skymall.user.ws.result.SurveyResult;
+import com.skysea.pushing.util.StringUtils;
 
 public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements SurveyWebService{
 
@@ -60,6 +61,9 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 			List<Survey> surveies = surveyService.find("from Survey");
 			if(surveies!=null && surveies.size()>0){
 				Survey survey = surveies.get(0);
+				if(condition.getSurveyType()!=null && condition.getSurveyType()==2){
+					survey = surveies.get(1);
+				}
 				List<SurveyQuestion> questions = surveyQuestionService.find("from SurveyQuestion where surveyId="+survey.getId(), condition.getPageNumber(), condition.getPageSize());
 				Long total = surveyQuestionService.count("select count(*) from SurveyQuestion where surveyId="+survey.getId());
 				if(questions!=null && questions.size()>0){
@@ -99,7 +103,9 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 		}
 		return sr;
 	}
-
+/**
+ * 1.打分，2多选，3问答，4单选,目前单选多选类型的填空题暂时不支持有子问题的情况
+ */
 	@Override
 	public SurveyCommitResult commit(SurveyParam param) {
 		SurveyCommitResult sr=new SurveyCommitResult();
@@ -109,6 +115,7 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 			if(voyageInfos!=null&&voyageInfos.size()>0){
 				voyageId=voyageInfos.get(0).getVoyageId();
 			}
+			Integer surveyId = param.getSurveyId();
 			if(param.getQuestions()!=null && param.getQuestions().size()>0){
 				for(QuestionParam question:param.getQuestions()){
 					List<SurveyQuestionItemEntity> items = question.getItems();
@@ -126,6 +133,7 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							us.setCreatedatetime(new Date(System.currentTimeMillis()));
 							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
 							us.setVoyageId(voyageId);
+							us.setSurveyId(surveyId);
 							userSurveyService.save(us);
 						}
 					}else{
@@ -137,6 +145,10 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							us.setCreatedatetime(new Date(System.currentTimeMillis()));
 							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
 							us.setVoyageId(voyageId);
+							us.setSurveyId(surveyId);
+							if(!StringUtils.isNullOrEmpty(question.getAnswer())){
+								us.setAnswer(question.getAnswer());
+							}
 							userSurveyService.save(us);
 							
 						}else if(question.getType()==QuestionTypeEnum.MULTI.getValue()){
@@ -149,6 +161,10 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 									us.setCreatedatetime(new Date(System.currentTimeMillis()));
 									us.setUpdatedatetime(new Date(System.currentTimeMillis()));
 									us.setVoyageId(voyageId);
+									us.setSurveyId(surveyId);
+									if(!StringUtils.isNullOrEmpty(question.getAnswer()) && i==question.getAnswerIds().length-1){
+										us.setAnswer(question.getAnswer());
+									}
 									userSurveyService.save(us);
 								}
 							}
@@ -160,6 +176,7 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							us.setCreatedatetime(new Date(System.currentTimeMillis()));
 							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
 							us.setVoyageId(voyageId);
+							us.setSurveyId(surveyId);
 							userSurveyService.save(us);
 						}
 					}

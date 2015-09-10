@@ -28,6 +28,7 @@ public class SurveyAnswer implements Serializable {
 	private Integer id;
 	private String answer;
 	private Integer questionId;
+	private Integer canInput;
 	private Date createdatetime;
 	private Date updatedatetime;
 	@Id
@@ -52,6 +53,13 @@ public class SurveyAnswer implements Serializable {
 	}
 	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
+	}
+	@Column(name="can_input")
+	public Integer getCanInput() {
+		return canInput;
+	}
+	public void setCanInput(Integer canInput) {
+		this.canInput = canInput;
 	}
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", length = 7)

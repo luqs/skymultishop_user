@@ -43,9 +43,16 @@ public class QuestionAction extends BaseAction<SurveyQuestion> {
 	private static final String CONST_QUESTION = "question_home";
 	private Integer surveyId;
 	private String[] answers;
+	private String[] canInputs;
 	private String[] items;
 	private Integer type;
 	private List<SurveyQuestionDto> questionDtos;
+	public String[] getCanInputs() {
+		return canInputs;
+	}
+	public void setCanInputs(String[] canInputs) {
+		this.canInputs = canInputs;
+	}
 	@Autowired
 	private SurveyQuestionService surveyService;
 	
@@ -149,10 +156,22 @@ public class QuestionAction extends BaseAction<SurveyQuestion> {
 					for(String answer:answers){
 						String[] ans = answer.split(",");
 						if(ans!=null && ans.length>0){
-							for(String as:ans){
+							for(int i=0;i<ans.length;i++){
 								SurveyAnswer sa = new SurveyAnswer();
 								sa.setQuestionId(qid);
-								sa.setAnswer(as);
+								sa.setAnswer(ans[i]);
+								if(canInputs!=null && canInputs.length>0){
+									String[] inputs = canInputs[0].split(",");
+									if(inputs!=null && inputs.length>0){
+										for(int j=0;j<inputs.length;j++){
+											if(i==Integer.valueOf(inputs[j])){
+												sa.setCanInput(1);
+												break;
+											}
+										}
+									}
+									
+								}
 								sa.setCreatedatetime(new Date(System.currentTimeMillis()));
 								sa.setUpdatedatetime(new Date(System.currentTimeMillis()));
 								surveyAnswerService.save(sa);

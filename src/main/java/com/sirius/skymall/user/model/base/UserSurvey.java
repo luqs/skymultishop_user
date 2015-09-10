@@ -27,6 +27,7 @@ public class UserSurvey implements Serializable {
 	private static final long serialVersionUID = 1717885457312264615L;
 	private Integer id;
 	private Integer userId;
+	private Integer surveyId;
 	private Integer questionId;
 	private Integer itemId;
 	private Integer answerId;
@@ -52,6 +53,13 @@ public class UserSurvey implements Serializable {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	@Column(name="survey_id")
+	public Integer getSurveyId() {
+		return surveyId;
+	}
+	public void setSurveyId(Integer surveyId) {
+		this.surveyId = surveyId;
 	}
 	@Column(name="question_id")
 	public Integer getQuestionId() {

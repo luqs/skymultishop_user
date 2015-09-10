@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SurveyParam {
 	private List<QuestionParam> questions;
 	private Integer userId;
+	private Integer surveyId;
 	private Integer acceptEmail;
 	private Integer acceptAnalyst;
 	public Integer getAcceptEmail() {
@@ -26,6 +27,12 @@ public class SurveyParam {
 	}
 	private Integer acceptAds;
 	
+	public Integer getSurveyId() {
+		return surveyId;
+	}
+	public void setSurveyId(Integer surveyId) {
+		this.surveyId = surveyId;
+	}
 	public Integer getAcceptAnalyst() {
 		return acceptAnalyst;
 	}

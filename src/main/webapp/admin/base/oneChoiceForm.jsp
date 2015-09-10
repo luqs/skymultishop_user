@@ -117,10 +117,12 @@ ul, ol, li {
 					<li style="">
 					<input  type="radio" name="radio">
 					<input type="text" name="answers" style="width:200px;"></input>
+					<input type="checkbox" name="canInputs" value="0">是否可输入
 					</li>
 					<li style="">
 					<input  type="radio" name="radio">
 					<input type="text" name="answers" style="width:200px;"></input>
+					<input type="checkbox" name="canInputs" value="1">是否可输入
 					</li>
 				</ul>
 				<div class="operationH">

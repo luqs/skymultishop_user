@@ -25,8 +25,9 @@ var submitForm = function($dialog, $grid, $pjq,$window) {
 		submitNow($dialog, $grid, $pjq,$window);
 	}
 };
+var i=2;
 var appendOpts = function(){
-	$(".unstyled").append('<li style=""><input  type="checkbox" name="radio"><input type="text" name="answers" style="width:200px;"></input></li>');
+	$(".unstyled").append('<li style=""><input  type="checkbox" name="radio"><input type="text" name="answers" style="width:200px;"></input><input type="checkbox" name="canInputs" value="'+i+'">是否可输入</li>');
 };
 var appendQuestionItems = function(){
 	$(".question-items").append('<li style=""><input type="text" name="items" style="width:200px;"></input></li>');

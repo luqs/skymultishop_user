@@ -6,8 +6,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SurveyQueryCondition {
 	private Integer pageSize=1;
 	private Integer pageNumber=1;
+	private Integer surveyType;
 	public Integer getPageSize() {
 		return pageSize;
+	}
+	public Integer getSurveyType() {
+		return surveyType;
+	}
+	public void setSurveyType(Integer surveyType) {
+		this.surveyType = surveyType;
 	}
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
