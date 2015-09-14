@@ -119,13 +119,13 @@ public class MemCached {
    
     public static void main(String[] args)
     {
-//        MemCached cache = MemCached.getInstance();
-//        String sourceStr = "0000008801" + "-" + String.valueOf(System.currentTimeMillis());
-//		String userToken = new BASE64Encoder().encode(sourceStr.getBytes());
-//		cache.add(userToken, "aaa");
-//        Object obj = cache.get("MDAwMDAwODgwNy0xNDM1MTEyMjk3NzY1");
+        MemCached cache = MemCached.getInstance();
+        String sourceStr = "0000008801" + "-" + String.valueOf(System.currentTimeMillis());
+		String userToken = new BASE64Encoder().encode(sourceStr.getBytes());
+		cache.add(userToken, "aaa");
+        Object obj = cache.get("MDAwMDAwODgwMS0xNDQwNjU3OTQ2NTUy");
         
-        String name = getPinYin("卢青松");
+        //String name = getPinYin("卢青松");
     }
     public static String getPinYin(String src) {
         char[] t1 = null;
