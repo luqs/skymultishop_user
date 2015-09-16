@@ -7,21 +7,27 @@ public class AppLogCountEntity {
 	private Integer loginCount1;
 	private Integer loginCount2;
 	private Integer loginCount3;
+	private Integer loginCount4;
 	private Integer phoneCount1;
 	private Integer phoneCount2;
 	private Integer phoneCount3;
+	private Integer phoneCount4;
 	private Integer avgPhoneCount1;
 	private Integer avgPhoneCount2;
 	private Integer avgPhoneCount3;
+	private Integer avgPhoneCount4;
 	private Integer avgPhoneDuration1;
 	private Integer avgPhoneDuration2;
 	private Integer avgPhoneDuration3;
+	private Integer avgPhoneDuration4;
 	private Integer msgCount1;
 	private Integer msgCount2;
 	private Integer msgCount3;
+	private Integer msgCount4;
 	private Integer avgMsgCount1;
 	private Integer avgMsgCount2;
 	private Integer avgMsgCount3;
+	private Integer avgMsgCount4;
 	private String maxPhoneTime;
 	private String maxMsgTime;
 	
@@ -144,6 +150,42 @@ public class AppLogCountEntity {
 	}
 	public void setMaxMsgTime(String maxMsgTime) {
 		this.maxMsgTime = maxMsgTime;
+	}
+	public Integer getLoginCount4() {
+		return loginCount4;
+	}
+	public void setLoginCount4(Integer loginCount4) {
+		this.loginCount4 = loginCount4;
+	}
+	public Integer getPhoneCount4() {
+		return phoneCount4;
+	}
+	public void setPhoneCount4(Integer phoneCount4) {
+		this.phoneCount4 = phoneCount4;
+	}
+	public Integer getAvgPhoneCount4() {
+		return avgPhoneCount4;
+	}
+	public void setAvgPhoneCount4(Integer avgPhoneCount4) {
+		this.avgPhoneCount4 = avgPhoneCount4;
+	}
+	public Integer getAvgPhoneDuration4() {
+		return avgPhoneDuration4;
+	}
+	public void setAvgPhoneDuration4(Integer avgPhoneDuration4) {
+		this.avgPhoneDuration4 = avgPhoneDuration4;
+	}
+	public Integer getMsgCount4() {
+		return msgCount4;
+	}
+	public void setMsgCount4(Integer msgCount4) {
+		this.msgCount4 = msgCount4;
+	}
+	public Integer getAvgMsgCount4() {
+		return avgMsgCount4;
+	}
+	public void setAvgMsgCount4(Integer avgMsgCount4) {
+		this.avgMsgCount4 = avgMsgCount4;
 	}
 	
 	

@@ -1109,68 +1109,88 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				String sqlLoginCount1="SELECT COUNT(*) FROM (SELECT DISTINCT t1.user_name FROM shop_user_login t1,shop_user t2 WHERE t1.flight_no='"+ssoEntity.getVoyage()+"' AND t1.user_name=t2.username AND t2.age<=17) AS t";
 				String sqlLoginCount2="SELECT COUNT(*) FROM (SELECT DISTINCT t1.user_name FROM shop_user_login t1,shop_user t2 WHERE t1.flight_no='"+ssoEntity.getVoyage()+"' AND t1.user_name=t2.username AND t2.age>17 AND t2.age<=55) AS t";
 				String sqlLoginCount3="SELECT COUNT(*) FROM (SELECT DISTINCT t1.user_name FROM shop_user_login t1,shop_user t2 WHERE t1.flight_no='"+ssoEntity.getVoyage()+"' AND t1.user_name=t2.username AND t2.age>55) AS t";
+				String sqlLoginCount4="SELECT COUNT(*) FROM (SELECT DISTINCT t1.user_name FROM shop_user_login t1,shop_user t2 WHERE t1.flight_no='"+ssoEntity.getVoyage()+"' AND t1.user_name=t2.username AND t2.age is null) AS t";
 				String sqlphoneCount1="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=1 AND t1.from_user=t2.username AND t2.age<=17) AS t;";
 				String sqlphoneCount2="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=1 AND t1.from_user=t2.username AND t2.age>17 AND t2.age<=55) AS t;";
 				String sqlphoneCount3="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=1 AND t1.from_user=t2.username AND t2.age>55) AS t;";
+				String sqlphoneCount4="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=1 AND t1.from_user=t2.username AND t2.age is null) AS t;";
 				String sqlphoneTotalCount1="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=1 AND t1.from_user=t2.username AND t2.age<=17) AS t;";
 				String sqlphoneTotalCount2="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=1 AND t1.from_user=t2.username AND t2.age>17 AND t2.age<=55) AS t;";
 				String sqlphoneTotalCount3="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=1 AND t1.from_user=t2.username AND t2.age>55) AS t;";
+				String sqlphoneTotalCount4="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=1 AND t1.from_user=t2.username AND t2.age is null) AS t;";
 				String sqlmsgCount1="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age<=17) AS t;";
 				String sqlmsgCount2="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age>17 AND t2.age<=55) AS t;";
 				String sqlmsgCount3="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=2 AND t1.from_user=t2.username AND t2.age>55) AS t;";
+				String sqlmsgCount4="SELECT COUNT(*) FROM (SELECT DISTINCT t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' and t1.type=2 AND t1.from_user=t2.username AND t2.age is null) AS t;";
 				String sqlmsgTotalCount1="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age<=17) AS t;";
 				String sqlmsgTotalCount2="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age>17 AND t2.age<=55) AS t;";
 				String sqlmsgTotalCount3="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age>55) AS t;";
+				String sqlmsgTotalCount4="SELECT COUNT(*) FROM (SELECT  t1.from_user FROM app_log t1,shop_user t2 WHERE t1.voyage_id='"+ssoEntity.getVoyage()+"' AND t1.type=2 AND t1.from_user=t2.username AND t2.age is null) AS t;";
 				String sqlAvgPhoneDuration1 = "SELECT * FROM (SELECT AVG(duration),from_user,type FROM app_log where voyage_id='"+ssoEntity.getVoyage()+"' AND type=1 GROUP BY from_user) AS t1,shop_user t2 WHERE  t1.from_user=t2.username AND t2.age<=17";
 				String sqlAvgPhoneDuration2 = "SELECT * FROM (SELECT AVG(duration),from_user,type FROM app_log where voyage_id='"+ssoEntity.getVoyage()+"' AND type=1 GROUP BY from_user) AS t1,shop_user t2 WHERE  t1.from_user=t2.username AND t2.age>17 AND t2.age<=55";
 				String sqlAvgPhoneDuration3 = "SELECT * FROM (SELECT AVG(duration),from_user,type FROM app_log where voyage_id='"+ssoEntity.getVoyage()+"' AND type=1 GROUP BY from_user) AS t1,shop_user t2 WHERE  t1.from_user=t2.username AND t2.age>55";
+				String sqlAvgPhoneDuration4 = "SELECT * FROM (SELECT AVG(duration),from_user,type FROM app_log where voyage_id='"+ssoEntity.getVoyage()+"' AND type=1 GROUP BY from_user) AS t1,shop_user t2 WHERE  t1.from_user=t2.username AND t2.age is null";
 				
 				List loginCountList1 = userLoginService.findBySql(sqlLoginCount1);
 				List loginCountList2 = userLoginService.findBySql(sqlLoginCount2);
 				List loginCountList3 = userLoginService.findBySql(sqlLoginCount3);
+				List loginCountList4 = userLoginService.findBySql(sqlLoginCount4);
 				
 				List phoneCountList1 = appLogService.findBySql(sqlphoneCount1);
 				List phoneCountList2 = appLogService.findBySql(sqlphoneCount2);
 				List phoneCountList3 = appLogService.findBySql(sqlphoneCount3);
+				List phoneCountList4 = appLogService.findBySql(sqlphoneCount4);
 				List phoneTotalCountList1 = appLogService.findBySql(sqlphoneTotalCount1);
 				List phoneTotalCountList2 = appLogService.findBySql(sqlphoneTotalCount2);
 				List phoneTotalCountList3 = appLogService.findBySql(sqlphoneTotalCount3);
+				List phoneTotalCountList4 = appLogService.findBySql(sqlphoneTotalCount4);
 				
 				List avgPhoneDurationList1 = appLogService.findBySql(sqlAvgPhoneDuration1);
 				List avgPhoneDurationList2 = appLogService.findBySql(sqlAvgPhoneDuration2);
 				List avgPhoneDurationList3 = appLogService.findBySql(sqlAvgPhoneDuration3);
+				List avgPhoneDurationList4 = appLogService.findBySql(sqlAvgPhoneDuration4);
 				
 				List msgCountList1 = appLogService.findBySql(sqlmsgCount1);
 				List msgCountList2 = appLogService.findBySql(sqlmsgCount2);
 				List msgCountList3 = appLogService.findBySql(sqlmsgCount3);
+				List msgCountList4 = appLogService.findBySql(sqlmsgCount4);
 				List msgTotalCountList1 = appLogService.findBySql(sqlmsgTotalCount1);
 				List msgTotalCountList2 = appLogService.findBySql(sqlmsgTotalCount2);
 				List msgTotalCountList3 = appLogService.findBySql(sqlmsgTotalCount3);
+				List msgTotalCountList4 = appLogService.findBySql(sqlmsgTotalCount4);
 				
 				int loginCount1 = 0;
 				int loginCount2 = 0;
 				int loginCount3 = 0;
+				int loginCount4 = 0;
 				int phoneCount1 = 0;
 				int phoneCount2 = 0;
 				int phoneCount3 = 0;
+				int phoneCount4 = 0;
 				int phoneTotalCount1 = 0;
 				int phoneTotalCount2 = 0;
 				int phoneTotalCount3 = 0;
+				int phoneTotalCount4 = 0;
 				int avgphoneCount1 = 0;
 				int avgphoneCount2 = 0;
 				int avgphoneCount3 = 0;
+				int avgphoneCount4 = 0;
 				int avgPhoneDuration1 = 0;
 				int avgPhoneDuration2 = 0;
 				int avgPhoneDuration3 = 0;
+				int avgPhoneDuration4 = 0;
 				int msgCount1 = 0;
 				int msgCount2 = 0;
 				int msgCount3 = 0;
+				int msgCount4 = 0;
 				int msgTotalCount1 = 0;
 				int msgTotalCount2 = 0;
 				int msgTotalCount3 = 0;
+				int msgTotalCount4 = 0;
 				int avgmsgCount1 = 0;
 				int avgmsgCount2 = 0;
 				int avgmsgCount3 = 0;
+				int avgmsgCount4 = 0;
 				//login count
 				if(loginCountList1!=null && loginCountList1.size()>0){
 					Map<String,Object> mapLoginCount1=(Map<String,Object>)loginCountList1.get(0);
@@ -1183,6 +1203,10 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				if(loginCountList3!=null && loginCountList3.size()>0){
 					Map<String,Object> mapLoginCount3=(Map<String,Object>)loginCountList3.get(0);
 					loginCount3 = Integer.parseInt(mapLoginCount3.get("COUNT(*)").toString());
+				}
+				if(loginCountList4!=null && loginCountList4.size()>0){
+					Map<String,Object> mapLoginCount4=(Map<String,Object>)loginCountList4.get(0);
+					loginCount4 = Integer.parseInt(mapLoginCount4.get("COUNT(*)").toString());
 				}
 				//phone count
 				if(phoneCountList1!=null && phoneCountList1.size()>0){
@@ -1197,6 +1221,10 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 					Map<String,Object> mapPhoneCount3=(Map<String,Object>)phoneCountList3.get(0);
 					phoneCount3 = Integer.parseInt(mapPhoneCount3.get("COUNT(*)").toString());
 				}
+				if(phoneCountList4!=null && phoneCountList4.size()>0){
+					Map<String,Object> mapPhoneCount4 = (Map<String,Object>)phoneCountList4.get(0);
+					phoneCount4 = Integer.parseInt(mapPhoneCount4.get("COUNT(*)").toString());
+				}
 				//total phone count
 				if(phoneTotalCountList1!=null && phoneTotalCountList1.size()>0){
 					Map<String,Object> mapPhoneTotalCount1=(Map<String,Object>)phoneTotalCountList1.get(0);
@@ -1209,6 +1237,10 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				if(phoneTotalCountList3!=null && phoneTotalCountList3.size()>0){
 					Map<String,Object> mapPhoneTotalCount3=(Map<String,Object>)phoneTotalCountList3.get(0);
 					phoneTotalCount3 = Integer.parseInt(mapPhoneTotalCount3.get("COUNT(*)").toString());
+				}
+				if(phoneTotalCountList4 != null && phoneTotalCountList4.size()>0){
+					Map<String,Object> mapPhoneTotalCount4 = (Map<String,Object>)phoneTotalCountList4.get(0);
+					phoneTotalCount4 = Integer.parseInt(mapPhoneTotalCount4.get("COUNT(*)").toString());
 				}
 				//avg phone duration
 				if(avgPhoneDurationList1!=null && avgPhoneDurationList1.size()>0){
@@ -1232,6 +1264,13 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 					}
 					avgPhoneDuration3 = avgPhoneDuration3/avgPhoneDurationList3.size();
 				}
+				if(avgPhoneDurationList4 != null && avgPhoneDurationList4.size()>0){
+					for(int p=0;p<avgPhoneDurationList4.size();p++){
+						Map<String,Object> mapAvgPhoneDuration4=(Map<String,Object>)avgPhoneDurationList4.get(0);
+						avgPhoneDuration4 +=  (int)Double.parseDouble(mapAvgPhoneDuration4.get("AVG(duration)").toString());
+					}
+					avgPhoneDuration4 = avgPhoneDuration4/avgPhoneDurationList4.size();
+				}
 				//msg count
 				if(msgCountList1!=null && msgCountList1.size()>0){
 					Map<String,Object> mapMsgCount1=(Map<String,Object>)msgCountList1.get(0);
@@ -1244,6 +1283,10 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				if(msgCountList3!=null && msgCountList3.size()>0){
 					Map<String,Object> mapMsgCount3=(Map<String,Object>)msgCountList3.get(0);
 					msgCount3 = Integer.parseInt(mapMsgCount3.get("COUNT(*)").toString());
+				}
+				if(msgCountList4 != null && msgCountList4.size()>0){
+					Map<String,Object> mapMsgCount4=(Map<String,Object>)msgCountList4.get(0);
+					msgCount4 = Integer.parseInt(mapMsgCount4.get("COUNT(*)").toString());
 				}
 				//total msg count
 				if(msgTotalCountList1!=null && msgTotalCountList1.size()>0){
@@ -1258,6 +1301,10 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 					Map<String,Object> mapMsgTotalCount3=(Map<String,Object>)msgTotalCountList3.get(0);
 					msgTotalCount3 = Integer.parseInt(mapMsgTotalCount3.get("COUNT(*)").toString());
 				}
+				if(msgTotalCountList4 != null && msgTotalCountList4.size()>0){
+					Map<String,Object> mapMsgTotalCount4 = (Map<String,Object>)msgTotalCountList4.get(0);
+					msgTotalCount4 = Integer.parseInt(mapMsgTotalCount4.get("COUNT(*)").toString());
+				}
 				if(phoneCount1!=0){
 					avgphoneCount1 = phoneTotalCount1/phoneCount1;
 				}
@@ -1266,6 +1313,9 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				}
 				if(phoneCount3!=0){
 					avgphoneCount3 = phoneTotalCount3/phoneCount3;
+				}
+				if(phoneCount4 != 0){
+					avgphoneCount4 = phoneTotalCount4/phoneCount4;
 				}
 				if(msgCount1!=0){
 					avgmsgCount1 = msgTotalCount1/msgCount1;
@@ -1276,25 +1326,34 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				if(msgCount3!=0){
 					avgmsgCount3 = msgTotalCount3/msgCount3;
 				}
+				if(msgCount4 != 0){
+					avgmsgCount4 = msgTotalCount4/msgCount4;
+				}
 				AppLogCountEntity appLogEntity = new AppLogCountEntity();
 				appLogEntity.setLoginCount1(loginCount1);
 				appLogEntity.setLoginCount2(loginCount2);
 				appLogEntity.setLoginCount3(loginCount3);
+				appLogEntity.setLoginCount4(loginCount4);
 				appLogEntity.setPhoneCount1(phoneCount1);
 				appLogEntity.setPhoneCount2(phoneCount2);
 				appLogEntity.setPhoneCount3(phoneCount3);
+				appLogEntity.setPhoneCount4(phoneCount4);
 				appLogEntity.setMsgCount1(msgCount1);
 				appLogEntity.setMsgCount2(msgCount2);
 				appLogEntity.setMsgCount3(msgCount3);
+				appLogEntity.setMsgCount4(msgCount4);
 				appLogEntity.setAvgPhoneCount1(avgphoneCount1);
 				appLogEntity.setAvgPhoneCount2(avgphoneCount2);
 				appLogEntity.setAvgPhoneCount3(avgphoneCount3);
+				appLogEntity.setAvgPhoneCount4(avgphoneCount4);
 				appLogEntity.setAvgPhoneDuration1(avgPhoneDuration1);
 				appLogEntity.setAvgPhoneDuration2(avgPhoneDuration2);
 				appLogEntity.setAvgPhoneDuration3(avgPhoneDuration3);
+				appLogEntity.setAvgPhoneDuration4(avgPhoneDuration4);
 				appLogEntity.setAvgMsgCount1(avgmsgCount1);
 				appLogEntity.setAvgMsgCount2(avgmsgCount2);
 				appLogEntity.setAvgMsgCount3(avgmsgCount3);
+				appLogEntity.setAvgMsgCount4(avgmsgCount4);
 				appLogEntity = getMaxPhoneCount(ssoEntity.getVoyage(),appLogEntity);
 				sr.setAppLog(appLogEntity);
 				sr.setErrorCode(0);
