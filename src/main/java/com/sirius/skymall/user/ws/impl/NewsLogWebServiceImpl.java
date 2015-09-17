@@ -1,7 +1,10 @@
 package com.sirius.skymall.user.ws.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONObject;
 
@@ -16,9 +19,12 @@ import com.sirius.skymall.user.service.base.NewsLogService;
 import com.sirius.skymall.user.service.base.VoyageInfoService;
 import com.sirius.skymall.user.service.impl.BaseServiceImpl;
 import com.sirius.skymall.user.ws.NewsLogWebService;
+import com.sirius.skymall.user.ws.entity.NewsLogCountEntity;
 import com.sirius.skymall.user.ws.entity.NewsLogEntity;
+import com.sirius.skymall.user.ws.entity.NewsLogQueryCondition;
 import com.sirius.skymall.user.ws.error.ValidationError;
 import com.sirius.skymall.user.ws.result.AppLogResult;
+import com.sirius.skymall.user.ws.result.NewsLogResult;
 
 public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements NewsLogWebService{
 
@@ -74,4 +80,73 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
     	String strParamBusiness = "{\"NewsLogEntity\":"+modifyobj.toString()+"}";
     	JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/newslog/saveLog",strParamBusiness,ERestWebserviceClient.METHOD_POST); 
 	 }
+	/**
+	 * 获取资讯的 阅读次数的map集合 
+	 */
+	@Override
+	public NewsLogResult getNewsLog(NewsLogQueryCondition condition) {
+		NewsLogResult result = new NewsLogResult();
+		try {
+			String sql="SELECT COUNT(*),news_id FROM news_log GROUP BY news_id;";
+			List viewCountList = newsLogService.findBySql(sql);
+			List<NewsLogCountEntity> viewCountEntityList = new ArrayList<NewsLogCountEntity>();
+			if(viewCountList!=null && viewCountList.size()>0){
+				for(int i=0;i<viewCountList.size();i++){
+					Map<String,Object> mapViewCount=(Map<String,Object>)viewCountList.get(i);
+					Integer viewCount = Integer.parseInt(mapViewCount.get("COUNT(*)").toString());
+					Integer newsId = Integer.parseInt(mapViewCount.get("news_id").toString());
+					NewsLogCountEntity entity = new NewsLogCountEntity();
+					entity.setNewsId(newsId);
+					entity.setViewCount(viewCount);
+					viewCountEntityList.add(entity);
+				}
+			}
+			result.setErrorCode(0);
+			result.setErrorMessage("");
+			result.setNewsLogCountList(viewCountEntityList);
+		} catch (NumberFormatException e) {
+			ValidationError er=ValidationError.SYSTEM_ERROR;
+			int errorCode=er.getErrorCode();
+			result.setErrorCode(errorCode);
+			result.setErrorMessage("System Error");
+			logger.error(e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public NewsLogResult getNewsLogCount(NewsLogQueryCondition condition) {
+		NewsLogResult result = new NewsLogResult();
+		try {
+			String sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage FROM news_log GROUP BY news_id;";
+			List viewCountList = newsLogService.findBySql(sql);
+			List<NewsLogCountEntity> viewCountEntityList = new ArrayList<NewsLogCountEntity>();
+			if(viewCountList!=null && viewCountList.size()>0){
+				for(int i=0;i<viewCountList.size();i++){
+					Map<String,Object> mapViewCount=(Map<String,Object>)viewCountList.get(i);
+					Integer viewCount = Integer.parseInt(mapViewCount.get("COUNT(*)").toString());
+					Integer newsId = Integer.parseInt(mapViewCount.get("news_id").toString());
+					String newsTitle = mapViewCount.get("news_title").toString();
+					Integer newsType = Integer.parseInt(mapViewCount.get("news_type").toString());
+					Integer haveImage = Integer.parseInt(mapViewCount.get("haveImage").toString());
+					NewsLogCountEntity entity = new NewsLogCountEntity();
+					entity.setNewsId(newsId);
+					entity.setNewsType(newsType);
+					entity.setNewsTitle(newsTitle);
+					entity.setHaveImage(haveImage);
+					entity.setViewCount(viewCount);
+					viewCountEntityList.add(entity);
+				}
+			}
+			result.setErrorCode(0);
+			result.setErrorMessage("");
+			result.setNewsLogCountList(viewCountEntityList);
+		} catch (NumberFormatException e) {
+			ValidationError er=ValidationError.SYSTEM_ERROR;
+			int errorCode=er.getErrorCode();
+			result.setErrorCode(errorCode);
+			result.setErrorMessage("System Error");
+			logger.error(e.getMessage());
+		}
+		return result;
+	}
 }

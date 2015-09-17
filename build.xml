@@ -52,21 +52,11 @@
             <zipfileset prefix="WEB-INF/lib" dir="${web.dir}/WEB-INF/lib"/>
         </war>
     </target>
-     <target name="war-ship" depends="compile" description="Packages app as WAR">
-        <mkdir dir="${dist.dir}/ship"/>
-        <war destfile="${dist.dir}/ship/${webapp.name}.war"
-            webxml="${web.dir}/WEB-INF/web.xml" compress="true">
-            <classes dir="${web.dir}/WEB-INF/classes"/>
-            <fileset dir="${web.dir}" excludes="**/web.xml,**/classes/*.*,**/lib/*.*"/>
-            <zipfileset prefix="WEB-INF/lib" dir="${web.dir}/WEB-INF/lib"/>
-        </war>
-    </target>
-
     <target name="clean" description="Clean output directories">
     	<delete dir="${web.dir}/WEB-INF/classes"/>
         <delete dir="${dist.dir}"/>
     </target>   
-    <target name="all" depends="clean, compile, war-dev war-ship" 
+    <target name="all" depends="clean, compile, war-dev" 
                        description="Autobuild system will run this target">
     </target>
 </project>
