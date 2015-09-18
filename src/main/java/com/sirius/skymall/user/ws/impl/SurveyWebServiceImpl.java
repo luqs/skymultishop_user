@@ -167,6 +167,15 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 									}
 									userSurveyService.save(us);
 								}
+							}else{
+								UserSurvey us = new UserSurvey();
+								us.setUserId(param.getUserId());
+								us.setQuestionId(question.getId());
+								us.setCreatedatetime(new Date(System.currentTimeMillis()));
+								us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+								us.setVoyageId(voyageId);
+								us.setSurveyId(surveyId);
+								userSurveyService.save(us);
 							}
 						}else if(question.getType()==QuestionTypeEnum.ASK.getValue()){
 							UserSurvey us = new UserSurvey();
