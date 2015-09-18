@@ -1386,4 +1386,23 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 			  logger.error("", ex);
 		  }
 	 }
+	@Override
+	public SSOResult getCurrentVoyage() {
+		SSOResult ssoResult=new SSOResult();
+		try{
+			String flightNo="";//航班号
+			List<VoyageInfo> voyageInfoList = voyageInfoService.getVoyageInfo();
+			if(voyageInfoList!=null && voyageInfoList.size()>0){
+				VoyageInfo voyageInfo=voyageInfoList.get(0);
+				flightNo=voyageInfo.getVoyageId();//航班号
+				ssoResult.setErrorCode(0);
+				ssoResult.setErrorMessage("");
+				ssoResult.setVoyageId(flightNo);
+			}
+		}catch(Exception e){
+			ssoResult.setErrorCode(-1);
+			ssoResult.setErrorMessage(e.getMessage());
+		}
+		return ssoResult;
+	}
 }

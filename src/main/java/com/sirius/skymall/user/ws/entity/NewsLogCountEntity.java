@@ -9,11 +9,18 @@ public class NewsLogCountEntity {
 	private Integer newsType;
 	private Integer haveImage;
 	private Integer viewCount;
+	private String voyageId;
 	public Integer getNewsId() {
 		return newsId;
 	}
 	public void setNewsId(Integer newsId) {
 		this.newsId = newsId;
+	}
+	public String getVoyageId() {
+		return voyageId;
+	}
+	public void setVoyageId(String voyageId) {
+		this.voyageId = voyageId;
 	}
 	public Integer getViewCount() {
 		return viewCount;

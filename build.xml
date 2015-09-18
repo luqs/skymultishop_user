@@ -9,7 +9,7 @@
     <property name="webapp.name" value="user"/>
     <property name="webapp.version" value="1.0"/>
 
-    <property environment="env"/>
+    <property name="env" value="dev"/>
    
     <path id="runtime.classpath">
         <fileset dir="lib/compile">
@@ -39,13 +39,14 @@
         <copy todir="${web.dir}/WEB-INF/classes">
             <fileset dir="${src.dir}" includes="**/*.properties, **/*.xml"/>
             <fileset dir="${resources.dir}" includes="**/*.properties, **/*.xml"/>
+           
         </copy>           
         
     </target>
 
-    <target name="war-dev" depends="compile" description="Packages app as WAR">
-        <mkdir dir="${dist.dir}/dev"/>
-        <war destfile="${dist.dir}/dev/${webapp.name}.war"
+    <target name="war" depends="compile" description="Packages app as WAR">
+        <mkdir dir="${dist.dir}/${env}"/>
+        <war destfile="${dist.dir}/${env}/${webapp.name}.war"
             webxml="${web.dir}/WEB-INF/web.xml" compress="true">
             <classes dir="${web.dir}/WEB-INF/classes"/>
             <fileset dir="${web.dir}" excludes="**/web.xml,**/classes/*.*,**/lib/*.*"/>
@@ -56,7 +57,7 @@
     	<delete dir="${web.dir}/WEB-INF/classes"/>
         <delete dir="${dist.dir}"/>
     </target>   
-    <target name="all" depends="clean, compile, war-dev" 
+    <target name="all" depends="clean, compile, war" 
                        description="Autobuild system will run this target">
     </target>
 </project>

@@ -30,6 +30,13 @@ public class SSOResult extends ApiBaseResult{
 	private ShopUserLoginEntity shopUserLogin;
 	private List<VoyageInfoEntity> list;
 	private AppLogCountEntity appLog;
+	private String voyageId;
+	public String getVoyageId() {
+		return voyageId;
+	}
+	public void setVoyageId(String voyageId) {
+		this.voyageId = voyageId;
+	}
 	public AppLogCountEntity getAppLog() {
 		return appLog;
 	}

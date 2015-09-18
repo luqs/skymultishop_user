@@ -93,4 +93,8 @@ public interface SSOWebService extends BaseService<User>{
 	@Path("/getvoyages")
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public SSOResult getVoyages();
+	@GET
+	@Path("/getCurrentVoyage")
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	public SSOResult getCurrentVoyage();
 }

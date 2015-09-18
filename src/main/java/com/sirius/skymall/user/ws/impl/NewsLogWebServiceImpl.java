@@ -80,6 +80,15 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
     	String strParamBusiness = "{\"NewsLogEntity\":"+modifyobj.toString()+"}";
     	JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/newslog/saveLog",strParamBusiness,ERestWebserviceClient.METHOD_POST); 
 	 }
+	 private String getVoyageId(){
+		 String flightNo="";//航班号
+		 List<VoyageInfo> voyageInfoList = voyageInfoService.getVoyageInfo();
+		 if(voyageInfoList!=null && voyageInfoList.size()>0){
+			VoyageInfo voyageInfo=voyageInfoList.get(0);
+			flightNo=voyageInfo.getVoyageId();//航班号
+		 }
+		 return flightNo;
+	 }
 	/**
 	 * 获取资讯的 阅读次数的map集合 
 	 */
@@ -87,7 +96,13 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 	public NewsLogResult getNewsLog(NewsLogQueryCondition condition) {
 		NewsLogResult result = new NewsLogResult();
 		try {
-			String sql="SELECT COUNT(*),news_id FROM news_log GROUP BY news_id;";
+			String voyageId = getVoyageId();
+			String sql = "";
+			if(StringUtils.isNullOrEmpty(voyageId)){
+				sql="SELECT COUNT(*),news_id FROM news_log GROUP BY news_id;";
+			}else{
+				sql="SELECT COUNT(*),news_id FROM (select * from news_log where voyage_id='"+voyageId+"') as t GROUP BY t.news_id";
+			}
 			List viewCountList = newsLogService.findBySql(sql);
 			List<NewsLogCountEntity> viewCountEntityList = new ArrayList<NewsLogCountEntity>();
 			if(viewCountList!=null && viewCountList.size()>0){
@@ -117,7 +132,14 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 	public NewsLogResult getNewsLogCount(NewsLogQueryCondition condition) {
 		NewsLogResult result = new NewsLogResult();
 		try {
-			String sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage FROM news_log GROUP BY news_id;";
+			String voyageId = getVoyageId();
+			String sql="";
+			if(StringUtils.isNullOrEmpty(voyageId)){
+				sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage FROM news_log GROUP BY news_id;";
+			}else{
+				sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage,voyage_id FROM (SELECT * FROM news_log WHERE voyage_id='"+voyageId+"') AS t GROUP BY t.news_id";
+			}
+			
 			List viewCountList = newsLogService.findBySql(sql);
 			List<NewsLogCountEntity> viewCountEntityList = new ArrayList<NewsLogCountEntity>();
 			if(viewCountList!=null && viewCountList.size()>0){
@@ -134,6 +156,7 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 					entity.setNewsTitle(newsTitle);
 					entity.setHaveImage(haveImage);
 					entity.setViewCount(viewCount);
+					entity.setVoyageId(voyageId);
 					viewCountEntityList.add(entity);
 				}
 			}
