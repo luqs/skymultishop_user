@@ -118,7 +118,12 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 			}
 			result.setErrorCode(0);
 			result.setErrorMessage("");
-			result.setNewsLogCountList(viewCountEntityList);
+			if(viewCountEntityList.size()==1){
+				result.setNewsLogCount(viewCountEntityList.get(0));
+			}else{
+				result.setNewsLogCountList(viewCountEntityList);
+			}
+			
 		} catch (NumberFormatException e) {
 			ValidationError er=ValidationError.SYSTEM_ERROR;
 			int errorCode=er.getErrorCode();
@@ -162,7 +167,12 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 			}
 			result.setErrorCode(0);
 			result.setErrorMessage("");
-			result.setNewsLogCountList(viewCountEntityList);
+			if(viewCountEntityList.size()==1){
+				result.setNewsLogCount(viewCountEntityList.get(0));
+			}else{
+				result.setNewsLogCountList(viewCountEntityList);
+			}
+			
 		} catch (NumberFormatException e) {
 			ValidationError er=ValidationError.SYSTEM_ERROR;
 			int errorCode=er.getErrorCode();
