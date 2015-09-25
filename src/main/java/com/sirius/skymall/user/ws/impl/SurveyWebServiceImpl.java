@@ -116,6 +116,7 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 				voyageId=voyageInfos.get(0).getVoyageId();
 			}
 			Integer surveyId = param.getSurveyId();
+			Date curTime = new Date(System.currentTimeMillis());
 			if(param.getQuestions()!=null && param.getQuestions().size()>0){
 				for(QuestionParam question:param.getQuestions()){
 					List<SurveyQuestionItemEntity> items = question.getItems();
@@ -130,8 +131,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							}else if(question.getType()==QuestionTypeEnum.ASK.getValue()){
 								us.setAnswer(itemEntity.getAnswer());
 							}
-							us.setCreatedatetime(new Date(System.currentTimeMillis()));
-							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+							us.setCreatedatetime(curTime);
+							us.setUpdatedatetime(curTime);
 							us.setVoyageId(voyageId);
 							us.setSurveyId(surveyId);
 							userSurveyService.save(us);
@@ -142,8 +143,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							us.setUserId(param.getUserId());
 							us.setQuestionId(question.getId());
 							us.setAnswerId(question.getAnswerId());
-							us.setCreatedatetime(new Date(System.currentTimeMillis()));
-							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+							us.setCreatedatetime(curTime);
+							us.setUpdatedatetime(curTime);
 							us.setVoyageId(voyageId);
 							us.setSurveyId(surveyId);
 							if(!StringUtils.isNullOrEmpty(question.getAnswer())){
@@ -158,8 +159,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 									us.setUserId(param.getUserId());
 									us.setQuestionId(question.getId());
 									us.setAnswerId(question.getAnswerIds()[i]);
-									us.setCreatedatetime(new Date(System.currentTimeMillis()));
-									us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+									us.setCreatedatetime(curTime);
+									us.setUpdatedatetime(curTime);
 									us.setVoyageId(voyageId);
 									us.setSurveyId(surveyId);
 									if(!StringUtils.isNullOrEmpty(question.getAnswer()) && i==question.getAnswerIds().length-1){
@@ -171,8 +172,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 								UserSurvey us = new UserSurvey();
 								us.setUserId(param.getUserId());
 								us.setQuestionId(question.getId());
-								us.setCreatedatetime(new Date(System.currentTimeMillis()));
-								us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+								us.setCreatedatetime(curTime);
+								us.setUpdatedatetime(curTime);
 								us.setVoyageId(voyageId);
 								us.setSurveyId(surveyId);
 								userSurveyService.save(us);
@@ -182,8 +183,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 							us.setUserId(param.getUserId());
 							us.setQuestionId(question.getId());
 							us.setAnswer(question.getAnswer());
-							us.setCreatedatetime(new Date(System.currentTimeMillis()));
-							us.setUpdatedatetime(new Date(System.currentTimeMillis()));
+							us.setCreatedatetime(curTime);
+							us.setUpdatedatetime(curTime);
 							us.setVoyageId(voyageId);
 							us.setSurveyId(surveyId);
 							userSurveyService.save(us);
@@ -195,8 +196,8 @@ public class SurveyWebServiceImpl extends BaseServiceImpl<Survey>  implements Su
 				userSetting.setAcceptEmail(param.getAcceptEmail());
 				userSetting.setAcceptAnalyst(param.getAcceptAnalyst());
 				userSetting.setAcceptAds(param.getAcceptAds());
-				userSetting.setCreatedatetime(new Date(System.currentTimeMillis()));
-				userSetting.setUpdatedatetime(new Date(System.currentTimeMillis()));
+				userSetting.setCreatedatetime(curTime);
+				userSetting.setUpdatedatetime(curTime);
 				userSurveySettingService.save(userSetting);
 				sr.setErrorCode(0);
 				sr.setErrorMessage("");
