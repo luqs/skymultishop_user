@@ -121,6 +121,8 @@
 	</bean>
 	<bean id="newsLogWebService" class="com.sirius.skymall.user.ws.impl.NewsLogWebServiceImpl">
 	</bean>
+	<bean id="reconnectLogWebService" class="com.sirius.skymall.user.ws.impl.ReconnectLogWebServiceImpl">
+	</bean>
 	<bean id="ssoWebService" class="com.sirius.skymall.user.ws.impl.SSOWebServiceImpl">
 	</bean>
 	<bean id="messageWebService" class="com.sirius.skymall.user.ws.impl.MessageWebServiceImpl">
@@ -181,6 +183,7 @@
 			<ref bean="moduleWebService"/>
 			<ref bean="appLogWebService"/>
 			<ref bean="newsLogWebService"/>
+			<ref bean="reconnectLogWebService"/>
 		</jaxrs:serviceBeans>
 		<jaxrs:extensionMappings>
 			<entry key="json" value="application/json" />
