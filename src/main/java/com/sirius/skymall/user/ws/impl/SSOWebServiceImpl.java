@@ -50,7 +50,6 @@ import com.sirius.skymall.user.ws.entity.UserEntity;
 import com.sirius.skymall.user.ws.entity.VoyageInfoEntity;
 import com.sirius.skymall.user.ws.error.ValidationError;
 import com.sirius.skymall.user.ws.result.SSOResult;
-import com.sirius.skymall.user.ws.util.AppLogTypeEnum;
 import com.sirius.skymall.user.ws.util.ConvertHelper;
 import com.sirius.skymall.user.ws.util.Utils;
 
@@ -82,10 +81,13 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 		return userToken;
 		
 	}
-	private SSOResult saveToMemcachedAndLog(User usr,SSOResult sr,String version){
+	private SSOResult saveToMemcachedAndLog(User usr,SSOResult sr,String version,Integer loginType){
 		String token = saveToMamcached(usr);
     	sr.setToken(token);
-    	MailThread t = new MailThread(usr,sr,version);
+    	if(loginType!=null && loginType.intValue()==2){
+    		return sr;
+    	}
+    	LogThread t = new LogThread(usr,sr,version);
 		new Thread(t).start();
 		return sr;
 	}
@@ -139,7 +141,7 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 					sr.setUser(userEntity);
 			    	sr.setErrorCode(1);
 			    	sr.setErrorMessage("new user register");
-			    	sr = saveToMemcachedAndLog(usr,sr,version);
+			    	sr = saveToMemcachedAndLog(usr,sr,version,user.getLoginType());
 		    	}else{
 		    		ValidationError er=ValidationError.USER_NOEXIST;
 					int errorCode=er.getErrorCode();
@@ -169,7 +171,7 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				    	}
 				    	sr.setErrorCode(0);
 				    	sr.setErrorMessage("");
-				    	sr = saveToMemcachedAndLog(u,sr,version);
+				    	sr = saveToMemcachedAndLog(u,sr,version,user.getLoginType());
 				    }
 		    }
 		  
@@ -182,11 +184,11 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 	   return sr;
 
 	}
-	private class MailThread implements Runnable {
+	private class LogThread implements Runnable {
 		private User user;
 		private SSOResult  result;
 		private String version;
-		public MailThread(User u,SSOResult sr,String version) { 
+		public LogThread(User u,SSOResult sr,String version) { 
 			this.user = u; 
 			this.result = sr;
 			this.version = version;

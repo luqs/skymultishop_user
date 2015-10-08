@@ -35,7 +35,14 @@ public class UserEntity {
 	private String roomtelephone;
 	private String pinyinname;
 	private String version;
+	private Integer loginType;//1表示点击登录按钮登录，2表示自动登录
 	
+	public Integer getLoginType() {
+		return loginType;
+	}
+	public void setLoginType(Integer loginType) {
+		this.loginType = loginType;
+	}
 	public String getRealname() {
 		return realname;
 	}
