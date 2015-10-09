@@ -13,8 +13,11 @@ import com.sirius.skymall.user.model.base.User;
 import com.sirius.skymall.user.service.BaseService;
 import com.sirius.skymall.user.ws.entity.BusinessUserEntity;
 import com.sirius.skymall.user.ws.entity.QueryCondition;
+import com.sirius.skymall.user.ws.entity.RemarkQueryCondition;
 import com.sirius.skymall.user.ws.entity.UserEntity;
+import com.sirius.skymall.user.ws.entity.UserRemarkEntity;
 import com.sirius.skymall.user.ws.result.QueryUsersResult;
+import com.sirius.skymall.user.ws.result.UserRemarkResult;
 import com.sirius.skymall.user.ws.result.UserResult;
 
 @Path("/user")
@@ -69,4 +72,12 @@ public interface UserWebService extends BaseService<User>{
 	@Path("/verify/{shipCard}")
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public UserResult getUserByShipCard(@PathParam("shipCard")String shipCard);
+	@POST
+	@Path("/saveOrUpdateRemark")
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	public UserRemarkResult saveOrUpdateRemark(UserRemarkEntity remark);
+	@GET
+	@Path("/getRemark/condition")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public UserRemarkResult getRemark(@QueryParam("")RemarkQueryCondition condition);
 }

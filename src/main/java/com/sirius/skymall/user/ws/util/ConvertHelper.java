@@ -7,12 +7,14 @@ import com.sirius.skymall.user.model.base.Message;
 import com.sirius.skymall.user.model.base.User;
 import com.sirius.skymall.user.model.base.UserAddress;
 import com.sirius.skymall.user.model.base.UserDetail;
+import com.sirius.skymall.user.model.base.UserRemark;
 import com.sirius.skymall.user.model.base.UserRoster;
 import com.sirius.skymall.user.ws.entity.BusinessUserEntity;
 import com.sirius.skymall.user.ws.entity.MessageEntity;
 import com.sirius.skymall.user.ws.entity.MessageTypeEnum;
 import com.sirius.skymall.user.ws.entity.UserAddressEntity;
 import com.sirius.skymall.user.ws.entity.UserEntity;
+import com.sirius.skymall.user.ws.entity.UserRemarkEntity;
 import com.sirius.skymall.user.ws.entity.UserRosterEntity;
 
 public class ConvertHelper {
@@ -175,5 +177,12 @@ public class ConvertHelper {
 		userRosterEntity.setFriendUsername(userRoster.getFriendUsername());
 		userRosterEntity.setRoomNumBeWatch(userRoster.getRoomNumBeWatch());
 		return userRosterEntity;
+	}
+	public static UserRemarkEntity toUserRemarkEntity(UserRemark remark){
+		UserRemarkEntity entity = new UserRemarkEntity();
+		entity.setUserId(remark.getUserId());
+		entity.setFriendId(remark.getFriendId());
+		entity.setRemark(remark.getRemark());
+		return entity;
 	}
 }

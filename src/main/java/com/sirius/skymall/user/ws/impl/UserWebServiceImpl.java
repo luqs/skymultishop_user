@@ -11,17 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.sirius.skymall.user.model.base.BusinessUserDetail;
 import com.sirius.skymall.user.model.base.User;
 import com.sirius.skymall.user.model.base.UserDetail;
+import com.sirius.skymall.user.model.base.UserRemark;
 import com.sirius.skymall.user.service.base.BusinessUserDetailService;
 import com.sirius.skymall.user.service.base.UserDetailService;
+import com.sirius.skymall.user.service.base.UserRemarkService;
 import com.sirius.skymall.user.service.base.UserService;
 import com.sirius.skymall.user.service.impl.BaseServiceImpl;
 import com.sirius.skymall.user.util.base.MD5Util;
 import com.sirius.skymall.user.ws.UserWebService;
 import com.sirius.skymall.user.ws.entity.BusinessUserEntity;
 import com.sirius.skymall.user.ws.entity.QueryCondition;
+import com.sirius.skymall.user.ws.entity.RemarkQueryCondition;
 import com.sirius.skymall.user.ws.entity.UserEntity;
+import com.sirius.skymall.user.ws.entity.UserRemarkEntity;
 import com.sirius.skymall.user.ws.error.ValidationError;
 import com.sirius.skymall.user.ws.result.QueryUsersResult;
+import com.sirius.skymall.user.ws.result.UserRemarkResult;
 import com.sirius.skymall.user.ws.result.UserResult;
 import com.sirius.skymall.user.ws.util.Constants;
 import com.sirius.skymall.user.ws.util.ConvertHelper;
@@ -35,7 +40,8 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 	UserDetailService userDetailService;
 	@Autowired
 	UserService userService;
-	
+	@Autowired
+	UserRemarkService userRemarkService;
 	
 	private static final Logger logger = Logger.getLogger(UserWebServiceImpl.class);
 	
@@ -633,5 +639,74 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 			result = new QueryUsersResult(-1, "系统错误!", null, 0);
 			return result;
 		}
+	}
+
+
+	@Override
+	public UserRemarkResult saveOrUpdateRemark(UserRemarkEntity remark) {
+		UserRemarkResult ur = new UserRemarkResult();
+		try {
+			if(remark!=null && remark.getUserId()!=null && remark.getFriendId()!=null){
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where UserId="+remark.getUserId()+" and FriendId="+remark.getFriendId());
+				UserRemark userRemark = null;
+				Date time  = new Date();
+				if(userRemarks!=null && userRemarks.size()>0){
+					userRemark = userRemarks.get(0);
+					userRemark.setRemark(remark.getRemark());
+					userRemark.setUpdateDate(time);
+				}else{
+					userRemark = new UserRemark();
+					userRemark.setRemark(remark.getRemark());
+					userRemark.setUserId(remark.getUserId());
+					userRemark.setFriendId(remark.getFriendId());
+					userRemark.setCreateDate(time);
+					userRemark.setUpdateDate(time);
+				}
+				userRemarkService.saveOrUpdate(userRemark);
+				ur.setErrorCode(0);
+				ur.setErrorMessage("");
+				UserRemarkEntity userRemarkEntity = ConvertHelper.toUserRemarkEntity(userRemark);
+				ur.setRemark(userRemarkEntity);
+			}else{
+				ValidationError er=ValidationError.PARAM_MISSING;
+				ur.setErrorCode(er.getErrorCode());
+				ur.setErrorMessage("Param Missing");
+			}
+		} catch (Exception e) {
+			ValidationError ve=ValidationError.SYSTEM_ERROR;
+			ur.setErrorCode(ve.getErrorCode());
+			ur.setErrorMessage("系统错误");
+			logger.error(e.getMessage());
+		}
+		return ur;
+	}
+
+
+	@Override
+	public UserRemarkResult getRemark(RemarkQueryCondition condition) {
+		UserRemarkResult ur = new UserRemarkResult();
+		try {
+			if(condition!=null && condition.getUserId()!=null && condition.getFriendId()!=null){
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where UserId="+condition.getUserId()+" and FriendId="+condition.getFriendId());
+				UserRemark userRemark = null;
+				ur.setErrorCode(0);
+				ur.setErrorMessage("");
+				if(userRemarks!=null && userRemarks.size()>0){
+					userRemark = userRemarks.get(0);
+					UserRemarkEntity userRemarkEntity = ConvertHelper.toUserRemarkEntity(userRemark);
+					ur.setRemark(userRemarkEntity);
+				}
+			}else{
+				ValidationError er=ValidationError.PARAM_MISSING;
+				ur.setErrorCode(er.getErrorCode());
+				ur.setErrorMessage("Param Missing");
+			}
+		} catch (Exception e) {
+			ValidationError ve=ValidationError.SYSTEM_ERROR;
+			ur.setErrorCode(ve.getErrorCode());
+			ur.setErrorMessage("系统错误");
+			logger.error(e.getMessage());
+		}
+		return ur;
 	}	
 }

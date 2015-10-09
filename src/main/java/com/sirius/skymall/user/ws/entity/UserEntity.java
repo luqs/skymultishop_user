@@ -36,7 +36,6 @@ public class UserEntity {
 	private String pinyinname;
 	private String version;
 	private Integer loginType;//1表示点击登录按钮登录，2表示自动登录
-	
 	public Integer getLoginType() {
 		return loginType;
 	}

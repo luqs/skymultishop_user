@@ -53,21 +53,6 @@ public class User implements Serializable{
 	private String signature;//签名
 	private String pinyinname;
 	private Integer age;
-	
-	@Column(name="voyage_id",nullable=true)
-	public String getVoyagId() {
-		return voyagId;
-	}
-	@Column(name="age",nullable=true)
-	public Integer getAge() {
-		return age;
-	}
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-	public void setVoyagId(String voyagId) {
-		this.voyagId = voyagId;
-	}
 	private String voyagId;
 	
 	@Id
@@ -238,6 +223,20 @@ public class User implements Serializable{
 	}
 	public void setPinyinname(String pinyinname) {
 		this.pinyinname = pinyinname;
+	}
+	@Column(name="age",nullable=true)
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+	@Column(name="voyage_id",nullable=true)
+	public String getVoyagId() {
+		return voyagId;
+	}
+	public void setVoyagId(String voyagId) {
+		this.voyagId = voyagId;
 	}
 }
 
