@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.sirius.skymall.common.rest.client.ERestWebserviceClient;
 import com.sirius.skymall.user.model.base.BusinessUserDetail;
 import com.sirius.skymall.user.model.base.User;
 import com.sirius.skymall.user.model.base.UserDetail;
@@ -21,6 +24,7 @@ import com.sirius.skymall.user.util.base.MD5Util;
 import com.sirius.skymall.user.ws.UserWebService;
 import com.sirius.skymall.user.ws.entity.BusinessUserEntity;
 import com.sirius.skymall.user.ws.entity.QueryCondition;
+import com.sirius.skymall.user.ws.entity.ReconnectLogEntity;
 import com.sirius.skymall.user.ws.entity.RemarkQueryCondition;
 import com.sirius.skymall.user.ws.entity.UserEntity;
 import com.sirius.skymall.user.ws.entity.UserRemarkEntity;
@@ -647,7 +651,7 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 		UserRemarkResult ur = new UserRemarkResult();
 		try {
 			if(remark!=null && remark.getUserId()!=null && remark.getFriendId()!=null){
-				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where UserId="+remark.getUserId()+" and FriendId="+remark.getFriendId());
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+remark.getUserId()+" and friendId="+remark.getFriendId());
 				UserRemark userRemark = null;
 				Date time  = new Date();
 				if(userRemarks!=null && userRemarks.size()>0){
@@ -687,7 +691,7 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 		UserRemarkResult ur = new UserRemarkResult();
 		try {
 			if(condition!=null && condition.getUserId()!=null && condition.getFriendId()!=null){
-				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where UserId="+condition.getUserId()+" and FriendId="+condition.getFriendId());
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+condition.getUserId()+" and friendId="+condition.getFriendId());
 				UserRemark userRemark = null;
 				ur.setErrorCode(0);
 				ur.setErrorMessage("");
@@ -708,5 +712,8 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 			logger.error(e.getMessage());
 		}
 		return ur;
-	}	
+	}
+	public static void main(String[] args){
+	   	 JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/user/getRemark/condition.json?userId=29266&friendId=29267",null,ERestWebserviceClient.METHOD_GET); 
+	 }
 }

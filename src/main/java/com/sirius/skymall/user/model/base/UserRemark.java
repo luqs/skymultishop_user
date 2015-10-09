@@ -66,14 +66,14 @@ public class UserRemark implements Serializable{
 	public void setFriendId(Integer friendId) {
 		this.friendId = friendId;
 	}
-	@Column(name="creationDate",nullable=true)
+	@Column(name="create_time",nullable=true)
 	public Date getCreateDate() {
 		return createDate;
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	@Column(name="modificationDate",nullable=true)
+	@Column(name="update_time",nullable=true)
 	public Date getUpdateDate() {
 		return updateDate;
 	}
