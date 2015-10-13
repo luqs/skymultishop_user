@@ -4,12 +4,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="NewsLogEntity")
 public class NewsLogEntity {
+	private Integer pushId;
 	private Integer newsId;
 	private String newsTitle;
 	private Integer newsType;
 	private Integer haveImage;
 	private Integer userId;
 	private String userName;
+	public Integer getPushId() {
+		return pushId;
+	}
+	public void setPushId(Integer pushId) {
+		this.pushId = pushId;
+	}
 	public Integer getNewsId() {
 		return newsId;
 	}

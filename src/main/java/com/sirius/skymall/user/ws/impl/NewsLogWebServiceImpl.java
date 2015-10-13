@@ -2,7 +2,6 @@ package com.sirius.skymall.user.ws.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +44,9 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 				VoyageInfo voyageInfo=voyageInfoList.get(0);
 				flightNo=voyageInfo.getVoyageId();//航班号
 			}
-			if(newsLog!=null && (newsLog.getNewsId()!=null) && (newsLog.getNewsType()!=null)&&  (newsLog.getHaveImage()!=null) && !StringUtils.isNullOrEmpty(newsLog.getNewsTitle()) && (newsLog.getUserId()!=null) && !StringUtils.isNullOrEmpty(newsLog.getUserName())){
+			if(newsLog!=null && (newsLog.getPushId()!=null) && (newsLog.getNewsId()!=null) && (newsLog.getNewsType()!=null)&&  (newsLog.getHaveImage()!=null) && !StringUtils.isNullOrEmpty(newsLog.getNewsTitle()) && (newsLog.getUserId()!=null) && !StringUtils.isNullOrEmpty(newsLog.getUserName())){
 				NewsLog logObj = new NewsLog();
+				logObj.setPushId(newsLog.getPushId());
 				logObj.setNewsId(newsLog.getNewsId());
 				logObj.setNewsTitle(newsLog.getNewsTitle());
 				logObj.setNewsType(newsLog.getNewsType());

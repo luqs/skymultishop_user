@@ -23,6 +23,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate(true)
 public class NewsLog {
 	private Integer id;
+	private Integer pushId;
 	private Integer newsId;
 	private String newsTitle;
 	private Integer newsType;
@@ -40,6 +41,13 @@ public class NewsLog {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	@Column(name = "push_id", nullable = true)
+	public Integer getPushId() {
+		return pushId;
+	}
+	public void setPushId(Integer pushId) {
+		this.pushId = pushId;
 	}
 	@Column(name = "news_id", nullable = true)
 	public Integer getNewsId() {
