@@ -77,7 +77,7 @@ public interface UserWebService extends BaseService<User>{
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public UserRemarkResult saveOrUpdateRemark(UserRemarkEntity remark);
 	@GET
-	@Path("/getRemark/condition")
+	@Path("/getUserAndRemark/condition")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public UserRemarkResult getRemark(@QueryParam("")RemarkQueryCondition condition);
+	public UserResult getUserAndRemark(@QueryParam("")RemarkQueryCondition condition);
 }

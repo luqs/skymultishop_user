@@ -15,8 +15,15 @@ public class QueryCondition {
 	private int sex;
 	private int pageNum;
 	private int pageSize;
+	private Integer remarkUserId;
 	private Integer usertype;
 	
+	public Integer getRemarkUserId() {
+		return remarkUserId;
+	}
+	public void setRemarkUserId(Integer remarkUserId) {
+		this.remarkUserId = remarkUserId;
+	}
 	public Integer getUsertype() {
 		return usertype;
 	}

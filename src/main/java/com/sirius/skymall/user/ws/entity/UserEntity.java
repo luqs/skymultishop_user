@@ -35,6 +35,13 @@ public class UserEntity {
 	private String roomtelephone;
 	private String pinyinname;
 	private String version;
+	private String remark;
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 	private Integer loginType;//1表示点击登录按钮登录，2表示自动登录
 	public Integer getLoginType() {
 		return loginType;

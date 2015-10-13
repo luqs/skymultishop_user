@@ -2,7 +2,9 @@ package com.sirius.skymall.user.ws.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONObject;
 
@@ -399,6 +401,17 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 	@Override
 	public QueryUsersResult getAllConditionUser(QueryCondition condition) {
 		QueryUsersResult result = null;
+		Map<Integer,String> remarkMap = new HashMap<Integer,String>();
+		if(condition.getRemarkUserId()!=null){
+			//获取所有好友的remark信息
+			List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+condition.getRemarkUserId());
+			if(userRemarks!=null && userRemarks.size()>0){
+				for(int i=0;i<userRemarks.size();i++){
+					UserRemark userRemark = userRemarks.get(i);
+					remarkMap.put(userRemark.getFriendId(), userRemark.getRemark());
+				}
+			}
+		}
 		//先查询航班号 
 		String hsql = "from User order by createDate desc";
 		List<User> husers = userService.find(hsql, 1, 5);
@@ -476,6 +489,10 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 					for(User user:users) {
 						UserDetail userdetail = userDetailService.findByUserId(user.getId());
 						UserEntity userInfo = ConvertHelper.toUserEntity(user, userdetail);
+						String remark = remarkMap.get(user.getId());
+						if(remark!=null){
+							userInfo.setRemark(remark);
+						}
 						userList.add(userInfo);
 					}
 				}
@@ -650,8 +667,28 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 	public UserRemarkResult saveOrUpdateRemark(UserRemarkEntity remark) {
 		UserRemarkResult ur = new UserRemarkResult();
 		try {
-			if(remark!=null && remark.getUserId()!=null && remark.getFriendId()!=null){
-				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+remark.getUserId()+" and friendId="+remark.getFriendId());
+			Integer userId = 0;
+			Integer friendId = 0;
+			if(remark!=null){
+				if(remark.getUserName()!=null && (remark.getUserId()==null||remark.getUserId()==0)){
+					User user = userService.findByLoginName(remark.getUserName());
+					if(user!=null){
+						userId = user.getId();
+					}
+				}else{
+					userId = remark.getUserId();
+				}
+				if(remark.getFriendUserName()!=null && (remark.getFriendId()==null||remark.getFriendId()==0)){
+					User fUser = userService.findByLoginName(remark.getFriendUserName());
+					if(fUser!=null){
+						friendId = fUser.getId();
+					}
+				}else{
+					friendId = remark.getFriendId();
+				}
+			}
+			if(userId>0 && friendId>0){
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+userId+" and friendId="+friendId);
 				UserRemark userRemark = null;
 				Date time  = new Date();
 				if(userRemarks!=null && userRemarks.size()>0){
@@ -661,8 +698,8 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 				}else{
 					userRemark = new UserRemark();
 					userRemark.setRemark(remark.getRemark());
-					userRemark.setUserId(remark.getUserId());
-					userRemark.setFriendId(remark.getFriendId());
+					userRemark.setUserId(userId);
+					userRemark.setFriendId(friendId);
 					userRemark.setCreateDate(time);
 					userRemark.setUpdateDate(time);
 				}
@@ -686,34 +723,69 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 	}
 
 
+	public static void main(String[] args){
+	   	 //JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/user/getRemark/condition.json?userId=29266&friendId=29267",null,ERestWebserviceClient.METHOD_GET); 
+		 UserRemarkEntity remark = new UserRemarkEntity();
+		 remark.setUserName("0000008803");
+		 remark.setFriendUserName("0000008804");
+		 //remark.setUserId(29270);
+		 //remark.setFriendId(29271);
+		 remark.setRemark("test5");
+    	 JSONObject modifyobj = new JSONObject().fromObject(remark);
+    	 String strParamBusiness = "{\"UserRemarkEntity\":"+modifyobj.toString()+"}";
+    	 JSONObject objResult= ERestWebserviceClient.rest("http://192.168.100.57:8080/user/service/rest/user/saveOrUpdateRemark",strParamBusiness,ERestWebserviceClient.METHOD_POST);
+	}
+
+
 	@Override
-	public UserRemarkResult getRemark(RemarkQueryCondition condition) {
-		UserRemarkResult ur = new UserRemarkResult();
-		try {
-			if(condition!=null && condition.getUserId()!=null && condition.getFriendId()!=null){
-				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+condition.getUserId()+" and friendId="+condition.getFriendId());
-				UserRemark userRemark = null;
-				ur.setErrorCode(0);
-				ur.setErrorMessage("");
-				if(userRemarks!=null && userRemarks.size()>0){
-					userRemark = userRemarks.get(0);
-					UserRemarkEntity userRemarkEntity = ConvertHelper.toUserRemarkEntity(userRemark);
-					ur.setRemark(userRemarkEntity);
-				}
-			}else{
-				ValidationError er=ValidationError.PARAM_MISSING;
-				ur.setErrorCode(er.getErrorCode());
-				ur.setErrorMessage("Param Missing");
+	public UserResult getUserAndRemark(RemarkQueryCondition condition) {
+		UserResult ur=new UserResult();
+		try{
+			User user = null;
+			if(condition!=null && condition.getFriendId()!=null && condition.getFriendId()>0){
+				Integer friendId = condition.getFriendId();
+				user = userService.findById(friendId);
 			}
-		} catch (Exception e) {
+			if(condition!=null && !StringUtils.isBlank(condition.getFriendLoginName())){
+				String loginname = condition.getFriendLoginName();
+				user = userService.findByLoginName(loginname);
+			}
+			if(user!=null){
+				UserDetail userdetail = userDetailService.findByUserId(user.getId());
+				UserEntity userVO = ConvertHelper.toUserEntity(user,userdetail);
+				Integer friendId = 0;
+				if(condition!=null && condition.getFriendId()!=null && condition.getFriendId()>0){
+					friendId = condition.getFriendId();
+				}else{
+					friendId = user.getId();
+				}
+				Integer userId = 0;
+				if(condition!=null && condition.getUserName()!=null & (condition.getUserId()==null||condition.getUserId()==0)){
+					User userself = userService.findByLoginName(condition.getUserName());
+					if(userself!=null){
+						userId = userself.getId();
+					}
+				}else{
+					userId = condition.getUserId();
+				}
+				if(userId>0 && friendId>0){
+					List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+userId+" and friendId="+friendId);
+					UserRemark userRemark = null;
+					if(userRemarks!=null && userRemarks.size()>0){
+						userRemark = userRemarks.get(0);
+						userVO.setRemark(userRemark.getRemark());
+					}
+				}
+				ur.setUser(userVO);
+			}
+			ur.setErrorCode(0);
+			ur.setErrorMessage("");
+		}catch(Exception ex){
 			ValidationError ve=ValidationError.SYSTEM_ERROR;
 			ur.setErrorCode(ve.getErrorCode());
 			ur.setErrorMessage("系统错误");
-			logger.error(e.getMessage());
+			logger.error(ex.getMessage());
 		}
 		return ur;
 	}
-	public static void main(String[] args){
-	   	 JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/user/getRemark/condition.json?userId=29266&friendId=29267",null,ERestWebserviceClient.METHOD_GET); 
-	 }
 }

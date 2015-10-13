@@ -6,8 +6,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RemarkQueryCondition {
 	private Integer userId;
 	private Integer friendId;
+	private String userName;
+	private String friendLoginName;
 	public Integer getUserId() {
 		return userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getFriendLoginName() {
+		return friendLoginName;
+	}
+	public void setFriendLoginName(String friendLoginName) {
+		this.friendLoginName = friendLoginName;
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
