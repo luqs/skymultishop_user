@@ -52,7 +52,45 @@ public class ERestWebserviceClient {
               throw new RuntimeException(e );  
           }  
       }  
-      
+      public static JSONObject restWithoutSubstr(String serviceUrl,String parameter,String restMethod){  
+          try {  
+                URL url= new URL(serviceUrl);  
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();  
+                con.setRequestMethod(restMethod);  
+            	con.setRequestProperty("Content-type", "application/json");
+            	con.setRequestProperty("Charset", "utf-8"); 
+                //如果请求方法为PUT,POST和DELETE设置DoOutput为真  
+                if(!ERestWebserviceClient.METHOD_GET.equals(restMethod)){  
+                    con.setDoOutput(true);  
+                    if(!ERestWebserviceClient.METHOD_DELETE.equals(restMethod)){ //请求方法为PUT或POST时执行  
+                        OutputStream os = con.getOutputStream();   
+                        os.write(parameter.getBytes("UTF-8"));   
+                        os.close();   
+                    }  
+                    ////
+                    
+                    ////
+                }  
+//                else{ //请求方法为GET时执行  
+                    StringBuffer buffer = new StringBuffer();
+                    InputStream in= con.getInputStream();                
+                    byte[] b= new byte[1024];  
+                    int result= in.read(b);  
+                    while( result!=-1){  
+                        buffer.append(new String(b, 0, result,"UTF-8"));
+                        result= in.read(b);  
+                    }  
+                	System.out.println(buffer);
+                    if (con.getResponseCode() != 200) {
+                    	return null;
+                    }
+    			JSONObject obj = new JSONObject().fromObject(buffer.toString());
+    			return obj;
+          } catch ( Exception e ) {  
+        	  e.printStackTrace();
+              throw new RuntimeException(e );  
+          }  
+      }  
       
       
       

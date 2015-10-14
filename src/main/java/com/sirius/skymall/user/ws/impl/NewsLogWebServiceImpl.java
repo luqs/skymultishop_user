@@ -2,6 +2,7 @@ package com.sirius.skymall.user.ws.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +18,12 @@ import com.sirius.skymall.user.model.base.VoyageInfo;
 import com.sirius.skymall.user.service.base.NewsLogService;
 import com.sirius.skymall.user.service.base.VoyageInfoService;
 import com.sirius.skymall.user.service.impl.BaseServiceImpl;
+import com.sirius.skymall.user.util.base.ConfigUtil;
 import com.sirius.skymall.user.ws.NewsLogWebService;
 import com.sirius.skymall.user.ws.entity.NewsLogCountEntity;
 import com.sirius.skymall.user.ws.entity.NewsLogEntity;
 import com.sirius.skymall.user.ws.entity.NewsLogQueryCondition;
+import com.sirius.skymall.user.ws.entity.PublicPushInfoResult;
 import com.sirius.skymall.user.ws.error.ValidationError;
 import com.sirius.skymall.user.ws.result.AppLogResult;
 import com.sirius.skymall.user.ws.result.NewsLogResult;
@@ -44,15 +47,20 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 				VoyageInfo voyageInfo=voyageInfoList.get(0);
 				flightNo=voyageInfo.getVoyageId();//航班号
 			}
-			if(newsLog!=null && (newsLog.getPushId()!=null) && (newsLog.getNewsId()!=null) && (newsLog.getNewsType()!=null)&&  (newsLog.getHaveImage()!=null) && !StringUtils.isNullOrEmpty(newsLog.getNewsTitle()) && (newsLog.getUserId()!=null) && !StringUtils.isNullOrEmpty(newsLog.getUserName())){
+			if(newsLog!=null && (newsLog.getPushId()!=null) && (newsLog.getUserId()!=null) && !StringUtils.isNullOrEmpty(newsLog.getUserName())){
 				NewsLog logObj = new NewsLog();
 				logObj.setPushId(newsLog.getPushId());
-				logObj.setNewsId(newsLog.getNewsId());
-				logObj.setNewsTitle(newsLog.getNewsTitle());
-				logObj.setNewsType(newsLog.getNewsType());
+				String activityServer = ConfigUtil.get("activityserver");
+				JSONObject objResult= ERestWebserviceClient.restWithoutSubstr(activityServer+"/service/rest/publicPushInfo/getPublicPushInfo/"+newsLog.getPushId()+".json",null,ERestWebserviceClient.METHOD_GET); 
+				Map<String, Class> classMap = new HashMap<String, Class>();
+				PublicPushInfoResult uor=(PublicPushInfoResult)JSONObject.toBean(objResult, PublicPushInfoResult.class,classMap);
+				logObj.setNewsId(uor.getPublicInfo().getArticleId());
+				logObj.setNewsTitle(uor.getPublicInfo().getArticle().getTitle());
+				logObj.setNewsType(uor.getPublicInfo().getArticle().getType());
 				logObj.setUserId(newsLog.getUserId());
 				logObj.setUserName(newsLog.getUserName());
-				logObj.setHaveImage(newsLog.getHaveImage());
+				Integer hasImage = StringUtils.isNullOrEmpty(uor.getPublicInfo().getArticle().getMainImage())?0:1;
+				logObj.setHaveImage(hasImage);
 				logObj.setCreateTime(new Date());
 				logObj.setVoyageId(flightNo);
 				newsLogService.save(logObj);
@@ -75,7 +83,9 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 	}
 	 public static void main(String[] args){
 		 NewsLogEntity newsLog = new NewsLogEntity();
-		 //newsLog.setNewsId(newsId);
+		 newsLog.setPushId(277);
+		 newsLog.setUserId(0);
+		 newsLog.setUserName("0000000000");
     	JSONObject modifyobj = new JSONObject().fromObject(newsLog);
     	String strParamBusiness = "{\"NewsLogEntity\":"+modifyobj.toString()+"}";
     	JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/newslog/saveLog",strParamBusiness,ERestWebserviceClient.METHOD_POST); 
