@@ -156,9 +156,9 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 			String voyageId = getVoyageId();
 			String sql="";
 			if(StringUtils.isNullOrEmpty(voyageId)){
-				sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage FROM news_log GROUP BY news_id;";
+				sql="SELECT COUNT(*),push_id,news_id,news_title,news_type,haveImage FROM news_log GROUP BY push_id;";
 			}else{
-				sql="SELECT COUNT(*),news_id,news_title,news_type,haveImage,voyage_id FROM (SELECT * FROM news_log WHERE voyage_id='"+voyageId+"') AS t GROUP BY t.news_id";
+				sql="SELECT COUNT(*),push_id,news_id,news_title,news_type,haveImage,voyage_id FROM (SELECT * FROM news_log WHERE voyage_id='"+voyageId+"') AS t GROUP BY t.push_id";
 			}
 			
 			List viewCountList = newsLogService.findBySql(sql);
@@ -168,11 +168,13 @@ public class NewsLogWebServiceImpl extends BaseServiceImpl<NewsLog>  implements 
 					Map<String,Object> mapViewCount=(Map<String,Object>)viewCountList.get(i);
 					Integer viewCount = Integer.parseInt(mapViewCount.get("COUNT(*)").toString());
 					Integer newsId = Integer.parseInt(mapViewCount.get("news_id").toString());
+					Integer pushId = Integer.parseInt(mapViewCount.get("push_id").toString());
 					String newsTitle = mapViewCount.get("news_title").toString();
 					Integer newsType = Integer.parseInt(mapViewCount.get("news_type").toString());
 					Integer haveImage = Integer.parseInt(mapViewCount.get("haveImage").toString());
 					NewsLogCountEntity entity = new NewsLogCountEntity();
 					entity.setNewsId(newsId);
+					entity.setPushId(pushId);
 					entity.setNewsType(newsType);
 					entity.setNewsTitle(newsTitle);
 					entity.setHaveImage(haveImage);
