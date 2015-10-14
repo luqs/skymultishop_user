@@ -123,7 +123,13 @@ public class SycommonuserAction extends BaseAction<User> {
 					VoyageInfo voyageInfo=voyageInfoList.get(0);
 					flightNo=voyageInfo.getVoyageId();//航班号
 				}
-				String loginName = ConfigUtil.get("user_prefix") + data.getLoginname();
+				String loginName = "";
+				String dLoginName = data.getLoginname();
+				if(dLoginName!=null && dLoginName.startsWith("00")){
+					loginName = ConfigUtil.get("user_prefix") + dLoginName;
+				}else{
+					loginName = dLoginName;
+				}
 				data.setLoginname(loginName);
 				data.setBoatcard(loginName);
 				HqlFilter hqlFilter = new HqlFilter();
@@ -261,11 +267,15 @@ public class SycommonuserAction extends BaseAction<User> {
 			json.setMsg("modify success！default password：123456");
 		}else{
 			try{
-				System.out.println(!StringUtils.isBlank(data.getLoginname())&&!StringUtils.isBlank(data.getPwd()));
 				if (!StringUtils.isBlank(data.getLoginname())&&!StringUtils.isBlank(data.getPwd())) {
-				//	sysou
-					System.out.println("from User where loginname='"+ConfigUtil.get("user_prefix")+data.getLoginname()+"'");
-					User t = service.getByHql("from User where loginname='"+ConfigUtil.get("user_prefix")+data.getLoginname()+"'");
+					String dLoginName = data.getLoginname();
+					User t = null;
+					if(dLoginName!=null && dLoginName.startsWith("00")){
+						t = service.getByHql("from User where loginname='"+ConfigUtil.get("user_prefix")+data.getLoginname()+"'");
+					}else{
+						t = service.getByHql("from User where loginname='"+data.getLoginname()+"'");
+					}
+					
 					if(t!=null){
 						t.setPwd(MD5Util.md5(data.getPwd()));
 						t.setPlainPassword(data.getPwd());
