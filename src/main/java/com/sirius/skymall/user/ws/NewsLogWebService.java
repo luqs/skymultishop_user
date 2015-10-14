@@ -30,4 +30,8 @@ public interface NewsLogWebService extends BaseService<NewsLog>{
 	@Path("/getNewsLogCount")
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public NewsLogResult getNewsLogCount(@QueryParam("")NewsLogQueryCondition condition);
+	@GET
+	@Path("/getNewsViewDetailList")
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	public NewsLogResult getNewsViewDetailList(@QueryParam("")NewsLogQueryCondition condition);
 }

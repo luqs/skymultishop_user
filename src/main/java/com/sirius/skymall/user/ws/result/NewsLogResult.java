@@ -10,6 +10,7 @@ import com.sirius.skymall.user.ws.entity.NewsLogCountEntity;
 public class NewsLogResult extends ApiBaseResult{
 	private List<NewsLogCountEntity> newsLogCountList;
 	private NewsLogCountEntity newsLogCount;
+	private Integer rowCount;
 	public NewsLogResult(){
 		
 	}
@@ -28,5 +29,11 @@ public class NewsLogResult extends ApiBaseResult{
 	public NewsLogResult(int errorCode,String errorMessage){
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
+	}
+	public Integer getRowCount() {
+		return rowCount;
+	}
+	public void setRowCount(Integer rowCount) {
+		this.rowCount = rowCount;
 	}
 }

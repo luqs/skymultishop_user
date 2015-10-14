@@ -16,6 +16,7 @@ import com.sirius.skymall.user.ws.entity.QueryCondition;
 import com.sirius.skymall.user.ws.entity.RemarkQueryCondition;
 import com.sirius.skymall.user.ws.entity.UserEntity;
 import com.sirius.skymall.user.ws.entity.UserRemarkEntity;
+import com.sirius.skymall.user.ws.result.NewsLogResult;
 import com.sirius.skymall.user.ws.result.QueryUsersResult;
 import com.sirius.skymall.user.ws.result.UserRemarkResult;
 import com.sirius.skymall.user.ws.result.UserResult;
