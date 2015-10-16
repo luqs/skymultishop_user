@@ -669,24 +669,9 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 		try {
 			Integer userId = 0;
 			Integer friendId = 0;
-			if(remark!=null){
-				if(remark.getUserName()!=null && (remark.getUserId()==null||remark.getUserId()==0)){
-					User user = userService.findByLoginName(remark.getUserName());
-					if(user!=null){
-						userId = user.getId();
-					}
-				}else{
-					userId = remark.getUserId();
-				}
-				if(remark.getFriendUserName()!=null && (remark.getFriendId()==null||remark.getFriendId()==0)){
-					User fUser = userService.findByLoginName(remark.getFriendUserName());
-					if(fUser!=null){
-						friendId = fUser.getId();
-					}
-				}else{
-					friendId = remark.getFriendId();
-				}
-			}
+			UserRemarkEntity remarkEntity = refactorUserRemarkEntity(remark);
+			userId = remarkEntity.getUserId();
+			friendId = remarkEntity.getFriendId();
 			if(userId>0 && friendId>0){
 				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+userId+" and friendId="+friendId);
 				UserRemark userRemark = null;
@@ -726,14 +711,14 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 	public static void main(String[] args){
 	   	 //JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/user/getRemark/condition.json?userId=29266&friendId=29267",null,ERestWebserviceClient.METHOD_GET); 
 		 UserRemarkEntity remark = new UserRemarkEntity();
-		 remark.setUserName("0000008803");
-		 remark.setFriendUserName("0000008804");
+		 remark.setUserName("0000008803");//29268
+		 remark.setFriendUserName("0000008806");//29271
 		 //remark.setUserId(29270);
 		 //remark.setFriendId(29271);
 		 remark.setRemark("test5");
     	 JSONObject modifyobj = new JSONObject().fromObject(remark);
     	 String strParamBusiness = "{\"UserRemarkEntity\":"+modifyobj.toString()+"}";
-    	 JSONObject objResult= ERestWebserviceClient.rest("http://192.168.100.57:8080/user/service/rest/user/saveOrUpdateRemark",strParamBusiness,ERestWebserviceClient.METHOD_POST);
+    	 JSONObject objResult= ERestWebserviceClient.rest("http://localhost:8080/user/service/rest/user/removeRemark",strParamBusiness,ERestWebserviceClient.METHOD_POST);
 	}
 
 
@@ -785,6 +770,72 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 			ur.setErrorCode(ve.getErrorCode());
 			ur.setErrorMessage("系统错误");
 			logger.error(ex.getMessage());
+		}
+		return ur;
+	}
+	/*
+	 * 输入用户id,用户名都可以
+	 */
+	private UserRemarkEntity refactorUserRemarkEntity(UserRemarkEntity remark){
+		UserRemarkEntity result = new UserRemarkEntity();
+		Integer userId = 0;
+		Integer friendId = 0;
+		if(remark!=null){
+			if(remark.getUserName()!=null && (remark.getUserId()==null||remark.getUserId()==0)){
+				User user = userService.findByLoginName(remark.getUserName());
+				if(user!=null){
+					userId = user.getId();
+				}
+			}else{
+				userId = remark.getUserId();
+			}
+			if(remark.getFriendUserName()!=null && (remark.getFriendId()==null||remark.getFriendId()==0)){
+				User fUser = userService.findByLoginName(remark.getFriendUserName());
+				if(fUser!=null){
+					friendId = fUser.getId();
+				}
+			}else{
+				friendId = remark.getFriendId();
+			}
+		}
+		result.setUserId(userId);
+		result.setFriendId(friendId);
+		return result;
+	}
+	@Override
+	public UserRemarkResult removeRemark(UserRemarkEntity remark) {
+		UserRemarkResult ur = new UserRemarkResult();
+		try {
+			Integer userId = 0;
+			Integer friendId = 0;
+			UserRemarkEntity remarkEntity = refactorUserRemarkEntity(remark);
+			userId = remarkEntity.getUserId();
+			friendId = remarkEntity.getFriendId();
+			if(userId>0 && friendId>0){
+				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+userId+" and friendId="+friendId);
+				UserRemark userRemark = null;
+				Date time  = new Date();
+				if(userRemarks!=null && userRemarks.size()>0){
+					userRemark = userRemarks.get(0);
+					userRemarkService.delete(userRemark);
+					ur.setErrorCode(0);
+					ur.setErrorMessage("");
+				}else{
+					ValidationError er=ValidationError.USER_NOEXIST;
+					ur.setErrorCode(er.getErrorCode());
+					ur.setErrorMessage("User remark not exist");
+				}
+				
+			}else{
+				ValidationError er=ValidationError.PARAM_MISSING;
+				ur.setErrorCode(er.getErrorCode());
+				ur.setErrorMessage("Param Missing");
+			}
+		} catch (Exception e) {
+			ValidationError ve=ValidationError.SYSTEM_ERROR;
+			ur.setErrorCode(ve.getErrorCode());
+			ur.setErrorMessage("系统错误");
+			logger.error(e.getMessage());
 		}
 		return ur;
 	}
