@@ -813,19 +813,15 @@ public class UserWebServiceImpl extends BaseServiceImpl<User>  implements UserWe
 			friendId = remarkEntity.getFriendId();
 			if(userId>0 && friendId>0){
 				List<UserRemark> userRemarks = userRemarkService.find(" from UserRemark where userId="+userId+" and friendId="+friendId);
-				UserRemark userRemark = null;
-				Date time  = new Date();
 				if(userRemarks!=null && userRemarks.size()>0){
-					userRemark = userRemarks.get(0);
-					userRemarkService.delete(userRemark);
-					ur.setErrorCode(0);
-					ur.setErrorMessage("");
-				}else{
-					ValidationError er=ValidationError.USER_NOEXIST;
-					ur.setErrorCode(er.getErrorCode());
-					ur.setErrorMessage("User remark not exist");
+					userRemarkService.delete(userRemarks.get(0));
 				}
-				
+				List<UserRemark> userRemarksReverse = userRemarkService.find(" from UserRemark where userId="+friendId+" and friendId="+userId);
+				if(userRemarksReverse!=null && userRemarksReverse.size()>0){
+					userRemarkService.delete(userRemarksReverse.get(0));
+				}
+				ur.setErrorCode(0);
+				ur.setErrorMessage("");
 			}else{
 				ValidationError er=ValidationError.PARAM_MISSING;
 				ur.setErrorCode(er.getErrorCode());
