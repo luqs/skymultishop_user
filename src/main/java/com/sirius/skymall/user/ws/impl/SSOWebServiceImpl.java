@@ -1276,36 +1276,36 @@ public class SSOWebServiceImpl extends BaseServiceImpl<User>  implements SSOWebS
 				//msg count
 				if(msgCountList1!=null && msgCountList1.size()>0){
 					Map<String,Object> mapMsgCount1=(Map<String,Object>)msgCountList1.get(0);
-					msgCount1 = Integer.parseInt(mapMsgCount1.get("COUNT(*)").toString());
+					msgCount1 = Integer.parseInt(mapMsgCount1.get("COUNT(*)").toString())-phoneCount1;
 				}
 				if(msgCountList2!=null && msgCountList2.size()>0){
 					Map<String,Object> mapMsgCount2=(Map<String,Object>)msgCountList2.get(0);
-					msgCount2 = Integer.parseInt(mapMsgCount2.get("COUNT(*)").toString());
+					msgCount2 = Integer.parseInt(mapMsgCount2.get("COUNT(*)").toString())-phoneCount2;
 				}
 				if(msgCountList3!=null && msgCountList3.size()>0){
 					Map<String,Object> mapMsgCount3=(Map<String,Object>)msgCountList3.get(0);
-					msgCount3 = Integer.parseInt(mapMsgCount3.get("COUNT(*)").toString());
+					msgCount3 = Integer.parseInt(mapMsgCount3.get("COUNT(*)").toString())-phoneCount3;
 				}
 				if(msgCountList4 != null && msgCountList4.size()>0){
 					Map<String,Object> mapMsgCount4=(Map<String,Object>)msgCountList4.get(0);
-					msgCount4 = Integer.parseInt(mapMsgCount4.get("COUNT(*)").toString());
+					msgCount4 = Integer.parseInt(mapMsgCount4.get("COUNT(*)").toString())-phoneCount4;
 				}
 				//total msg count
 				if(msgTotalCountList1!=null && msgTotalCountList1.size()>0){
 					Map<String,Object> mapMsgTotalCount1=(Map<String,Object>)msgTotalCountList1.get(0);
-					msgTotalCount1 = Integer.parseInt(mapMsgTotalCount1.get("COUNT(*)").toString());
+					msgTotalCount1 = Integer.parseInt(mapMsgTotalCount1.get("COUNT(*)").toString()) - phoneTotalCount1;
 				}
 				if(msgTotalCountList2!=null && msgTotalCountList2.size()>0){
 					Map<String,Object> mapMsgTotalCount2=(Map<String,Object>)msgTotalCountList2.get(0);
-					msgTotalCount2 = Integer.parseInt(mapMsgTotalCount2.get("COUNT(*)").toString());
+					msgTotalCount2 = Integer.parseInt(mapMsgTotalCount2.get("COUNT(*)").toString()) - phoneTotalCount2;
 				}
 				if(msgTotalCountList3!=null && msgTotalCountList3.size()>0){
 					Map<String,Object> mapMsgTotalCount3=(Map<String,Object>)msgTotalCountList3.get(0);
-					msgTotalCount3 = Integer.parseInt(mapMsgTotalCount3.get("COUNT(*)").toString());
+					msgTotalCount3 = Integer.parseInt(mapMsgTotalCount3.get("COUNT(*)").toString()) - phoneTotalCount3;
 				}
 				if(msgTotalCountList4 != null && msgTotalCountList4.size()>0){
 					Map<String,Object> mapMsgTotalCount4 = (Map<String,Object>)msgTotalCountList4.get(0);
-					msgTotalCount4 = Integer.parseInt(mapMsgTotalCount4.get("COUNT(*)").toString());
+					msgTotalCount4 = Integer.parseInt(mapMsgTotalCount4.get("COUNT(*)").toString()) - phoneTotalCount4;
 				}
 				if(phoneCount1!=0){
 					avgphoneCount1 = phoneTotalCount1/phoneCount1;
